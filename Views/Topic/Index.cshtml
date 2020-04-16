@@ -1,0 +1,14 @@
+﻿@model Topic
+@{
+    ViewData["Title"] = @Model.Title;
+}
+
+<h1>@Model.Title</h1>
+@foreach (var currentPost in @Model.Posts)
+{
+    <div style="border: 1px solid black;">
+        <p>@currentPost.Author.Username</p>
+        <p>@currentPost.Message</p>
+        <p>@currentPost.TimePublished</p>
+    </div>
+}

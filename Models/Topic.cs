@@ -14,5 +14,10 @@ namespace FORUM_PROJECT.Models
         public string Title { get; set; }
         public IEnumerable<Post> Posts { get; set; }
         public uint ViewCounter { get; set; } = 0;
+
+        public override string ToString()
+        {
+            return $"{{Title: {Title}; Posts Count: {Posts.Count()}; ViewCounter: {ViewCounter}}}";
+        }
     }
 }

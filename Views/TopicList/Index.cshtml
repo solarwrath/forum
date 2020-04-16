@@ -1,0 +1,10 @@
+﻿@model  IEnumerable<Topic>
+@{
+    ViewData["Title"] = "Forum";
+}
+
+<h1>Forum</h1>
+@foreach (var topic in Model)
+{
+    @await Html.PartialAsync("./_TopicListEntry", topic);
+}

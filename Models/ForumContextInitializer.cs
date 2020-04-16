@@ -30,12 +30,15 @@ namespace FORUM_PROJECT.Models
                 {
                     new Post {Author = users[0], Message = "Post message 1", TimePublished = DateTime.Now},
                     new Post {Author = users[1], Message = "Post message 2", TimePublished = DateTime.Now},
+                    new Post {Author = users[3], Message = "Post message 3", TimePublished = DateTime.Now},
                 };
 
             var topics = new List<Topic>
                 {
-                    new Topic{Posts = posts, Title="My topic"}
+                    new Topic{Posts = new List<Post> {posts[0], posts[1]}, Title="My topic"},
+                    new Topic{Posts = new List<Post> {posts[2]}, Title="My topic"}
                 };
+
             context.Topics.AddRange(topics);
 
             context.Posts.AddRange(posts);

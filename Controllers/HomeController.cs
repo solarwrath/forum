@@ -13,29 +13,17 @@ namespace FORUM_PROJECT.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private ForumContext _forumContext;
 
-        public HomeController(ILogger<HomeController> logger, ForumContext forumContext)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _forumContext = forumContext;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            List<Topic> topics = await _forumContext.Topics.ToListAsync();
-            return View(topics);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            //TODO Authorization check
+            _logger.LogCritical("Redirecting");
+            return RedirectToActionPermanent("Index", "TopicList");
         }
     }
 }
