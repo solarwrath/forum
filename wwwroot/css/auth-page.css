@@ -1,0 +1,48 @@
+﻿.auth.container {
+    height: 100%;
+}
+
+.auth .form-wrapper {
+    max-width: 750px;
+    padding: 80px 50px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
+}
+
+.auth .title {
+    font-size: 24pt;
+    font-weight: bolder;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    color: var(--primary);
+}
+
+.auth .sub-title {
+    margin-bottom: 50px;
+    text-align: center;
+    color: #333;
+}
+
+.auth form {
+    min-width: 320px;
+}
+
+.auth .form-group {
+    width: 100%;
+}
+
+.auth .btn {
+    width: 150px;
+    margin-top: 20px;
+    border-radius: 14px;
+}
+
+.auth .btn-row {
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.auth .btn:not(:last-of-type) {
+    margin-right: 10px;
+}

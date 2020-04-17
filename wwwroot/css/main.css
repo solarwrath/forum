@@ -1,0 +1,56 @@
+﻿:root {
+    --primary: #9b6155;
+    --primary-hover: #73483f;
+    --primary-active: #664038;
+    --primary-focus: #cc7f70;
+}
+
+body {
+    height: 100vh;
+}
+
+.main-content {
+    height: 100%;
+}
+
+.btn-primary {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: var(--primary-hover) !important;
+}
+
+.btn-primary:active {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    background-color: var(--primary-active) !important;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 .1rem var(--primary-focus) !important;
+}
+
+
+
+
+
+.btn-outline-primary {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-primary:active {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    background-color: var(--primary-active) !important;
+}
+
+.btn-outline-primary:focus, .btn-outline-primary.focus {
+    box-shadow: 0 0 0 .1rem var(--primary-focus) !important;
+}
