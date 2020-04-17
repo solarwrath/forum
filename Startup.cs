@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,9 @@ namespace FORUM_PROJECT
             services.AddDbContext<ForumContext>(options =>
                 options.UseSqlServer(Configuration["connectionString"])
                 );
+
+            services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();
+            services.AddScoped<TopicService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

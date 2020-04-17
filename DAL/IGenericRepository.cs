@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FORUM_PROJECT.DAL
 {
-    interface IGenericRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<TEntity> where TEntity : class
     {
         TEntity Get(
             Expression<Func<TEntity, bool>> filter,
