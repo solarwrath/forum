@@ -7,8 +7,18 @@
 @foreach (var currentPost in @Model.Posts)
 {
     <div style="border: 1px solid black;">
-        <p>@currentPost.Author.Username</p>
+        <p>@currentPost.Author.UserName</p>
         <p>@currentPost.Message</p>
         <p>@currentPost.TimePublished</p>
     </div>
 }
+
+<div>
+    <h2>Add Post</h2>
+    <form asp-action="AddPost" asp-controller="Topic" method="post">
+        <textarea name="postMessage"></textarea>
+        <button type="submit">Post</button>
+        <input type="hidden" name="topicId" value="@Model.Id"/>
+        @Model.Id
+    </form>
+</div>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,7 +22,8 @@ namespace FORUM_PROJECT
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetService<ForumContext>();
-                ForumDataSeeder.SeedForumData(context);
+                var userManager = services.GetService<UserManager<User>>();
+                ForumDataSeeder.SeedForumData(context, userManager);
             }
 
             host.Run();

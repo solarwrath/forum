@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,7 @@ namespace FORUM_PROJECT.Controllers
             _topicService = topicService;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             _logger.LogCritical("In topiclist");

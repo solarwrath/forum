@@ -7,6 +7,7 @@ using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,9 +30,28 @@ namespace FORUM_PROJECT
                 //Enable hot reloading
                 .AddRazorRuntimeCompilation();
 
+            services.AddHttpContextAccessor();
+
             services.AddDbContext<ForumContext>(options =>
                 options.UseSqlServer(Configuration["connectionString"])
                 );
+
+            services.AddIdentity<User, IdentityRole>(config =>
+            {
+                //Specify password requirements
+                config.Password.RequiredLength = 6;
+                config.Password.RequireDigit = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequireUppercase = false;
+            })
+                .AddEntityFrameworkStores<ForumContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "ForumIdentity.Cookie";
+                config.LoginPath = "/Auth/Login";
+            });
 
             services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();
             services.AddScoped<TopicService>();
@@ -53,6 +73,7 @@ namespace FORUM_PROJECT
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

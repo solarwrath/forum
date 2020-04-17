@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FORUM_PROJECT.Models
 {
-    public class ForumContext : DbContext
+    public class ForumContext : IdentityDbContext
     {
         public ForumContext(DbContextOptions<ForumContext> options) : base(options) { }
 
@@ -16,10 +17,12 @@ namespace FORUM_PROJECT.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasIndex(e => e.Email).IsUnique();
-                entity.HasIndex(e => e.Username).IsUnique();
+                entity.HasIndex(e => e.UserName).IsUnique();
             });
 
             modelBuilder.Entity<Post>()
