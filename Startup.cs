@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 
 namespace FORUM_PROJECT
 {
@@ -36,14 +38,18 @@ namespace FORUM_PROJECT
                 options.UseSqlServer(Configuration["connectionString"])
                 );
 
+            //Specify security requirements
             services.AddIdentity<User, IdentityRole>(config =>
-            {
-                //Specify password requirements
-                config.Password.RequiredLength = 6;
-                config.Password.RequireDigit = false;
-                config.Password.RequireNonAlphanumeric = false;
-                config.Password.RequireUppercase = false;
-            })
+                {
+                    config.User.RequireUniqueEmail = true;
+
+                    config.Password.RequiredLength = 6;
+                    config.Password.RequireDigit = false;
+                    config.Password.RequireNonAlphanumeric = false;
+                    config.Password.RequireUppercase = false;
+
+                    config.SignIn.RequireConfirmedEmail = true;
+                })
                 .AddEntityFrameworkStores<ForumContext>()
                 .AddDefaultTokenProviders();
 
@@ -52,6 +58,9 @@ namespace FORUM_PROJECT
                 config.Cookie.Name = "ForumIdentity.Cookie";
                 config.LoginPath = "/Auth/Login";
             });
+
+            //Need to send confirmation email
+            services.AddMailKit(config => config.UseMailKit(Configuration.GetSection("MailKit").Get<MailKitOptions>(), ServiceLifetime.Singleton));
 
             services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();
             services.AddScoped<TopicService>();

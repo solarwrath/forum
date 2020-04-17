@@ -79,11 +79,30 @@ namespace FORUM_PROJECT.Controllers
 
             if (errors == null)
             {
-                return RedirectToActionPermanent("Index", "Home");
+                return RedirectToActionPermanent("SentConfirmationEmail");
             }
 
             ViewData["signUpErrors"] = errors;
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult SentConfirmationEmail()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            bool confirmedSuccessfully = await _userService.ConfirmEmail(userId, code);
+
+            if (confirmedSuccessfully)
+            {
+                return View("ConfirmationEmailSuccess");
+            }
+
+            return View("ConfirmationEmailError");
         }
 
         public async Task<IActionResult> Logout()
