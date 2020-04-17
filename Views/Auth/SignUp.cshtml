@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model FORUM_PROJECT.ViewModels.UserSignUpViewModel
+
+@section Styles {
+    <link href="@Url.Content("~/css/auth-page.css")" rel="stylesheet" />
+}
+
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="container auth d-flex flex-column justify-content-center align-items-center">
+    <div class="form-wrapper d-flex flex-column justify-content-center align-items-center">
+        <h1 class="title">Join Us</h1>
+        <h2 class="sub-title">Register to join the community!</h2>
+
+        <form asp-contoller="Auth" asp-action="SignUp" method="post">
+            @{
+                IdentityError signUpError = (IdentityError)ViewData["signUpError"];
+                if (signUpError != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Couldn't register you: @signUpError.Description
+                    </div>
+                }
+            }
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" placeholder="Username" />
+                <span asp-validation-for="Username" class="text-danger" role="alert"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger" role="alert"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger" role="alert"></span>
+            </div>
+            <div class="btn-row">
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <a class="btn btn-outline-primary" asp-controller="Auth" asp-action="Login">Login</a>
+            </div>
+        </form>
+    </div>
+</div>

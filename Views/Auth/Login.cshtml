@@ -3,27 +3,37 @@
 }
 
 @{
-    ViewData["Title"] = "Login Page";
+    ViewData["Title"] = "Login";
 }
 
 <div class="container auth d-flex flex-column justify-content-center align-items-center">
     <div class="form-wrapper d-flex flex-column justify-content-center align-items-center">
-            <h1 class="title">Welcome</h1>
-            <h2 class="sub-title">Log in to start communicating!</h2>
+        <h1 class="title">Welcome</h1>
+        <h2 class="sub-title">Log in to start communicating!</h2>
 
-            <form action="/Auth/Login" method="post" class="d-flex flex-column align-items-center">
-                <div class="form-group">
-                    <label for="username">User</label>
-                    <input type="text" class="form-control" name="username" id="username" required placeholder="Username" />
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" id="password" required placeholder="Password" />
-                </div>
-                <div class="row btn-row">
-                    <button type="submit" class="btn btn-primary">Login</button>
-                    <a class="btn btn-outline-primary" asp-controller="Auth" asp-action="Register">Sign Up</a>
-                </div>
-            </form>
+        <form asp-controller="Auth" asp-action="Login" method="post">
+            @{
+                var hasLoginError = ViewData["hasLoginError"];
+                if (hasLoginError != null && (bool)hasLoginError)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Invalid credentials!
+                    </div>
+                }
+            }
+
+            <div class="form-group">
+                <label for="username">User</label>
+                <input type="text" class="form-control" name="username" id="username" required placeholder="Username" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" id="password" required placeholder="Password" />
+            </div>
+            <div class="btn-row">
+                <button type="submit" class="btn btn-primary">Login</button>
+                <a class="btn btn-outline-primary" asp-controller="Auth" asp-action="SignUp">Sign Up</a>
+            </div>
+        </form>
     </div>
 </div>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FORUM_PROJECT.Models;
+using FORUM_PROJECT.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -50,35 +51,38 @@ namespace FORUM_PROJECT.Controllers
                     _logger.LogCritical($"Signed in the user with username: {username} ");
                     return RedirectToActionPermanent("Index", "TopicList");
                 }
-                else
-                {
-                    _logger.LogCritical($"User login failed for user: {username} ");
-                }
-            }
-            else
-            {
-                _logger.LogCritical($"Haven't found the user with username: {username} ");
             }
 
-            return RedirectToActionPermanent("Index", "Home");
+            ViewData["hasLoginError"] = true;
+
+            return View();
         }
 
-        public IActionResult Register()
+        public IActionResult SignUp()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> SignUp(UserSignUpViewModel viewModel)
         {
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToActionPermanent("Index", "TopicList");
             }
 
+            if (!TryValidateModel(viewModel, nameof(UserSignUpViewModel)))
+            {
+                return View();
+            }
+
+            string username = viewModel.Username;
+            string email = viewModel.Email;
+            string password = viewModel.Password;
+
             var user = new User
             {
-                Email = "tes21t@gmail.com",
+                Email = email,
                 UserName = username,
             };
 
@@ -87,13 +91,16 @@ namespace FORUM_PROJECT.Controllers
             if (result.Succeeded)
             {
                 _logger.LogCritical($"Registered user with username: {username}");
+                //TODO Email veritifcation
+                return RedirectToActionPermanent("Index", "Home");
             }
             else
             {
                 _logger.LogCritical($"Couldn't register user with username: {username}");
+                ViewData["signUpError"] = result.Errors.First();
             }
 
-            return RedirectToActionPermanent("Index", "Home");
+            return View();
         }
 
         public async Task<IActionResult> Logout()

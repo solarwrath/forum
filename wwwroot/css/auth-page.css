@@ -25,7 +25,7 @@
 }
 
 .auth form {
-    min-width: 320px;
+    width: 320px;
 }
 
 .auth .form-group {
@@ -39,8 +39,9 @@
 }
 
 .auth .btn-row {
-    width: 100%;
+    display: flex;
     justify-content: space-evenly;
+    width: 100%;
 }
 
 .auth .btn:not(:last-of-type) {

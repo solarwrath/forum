@@ -13,6 +13,16 @@ body {
     height: 100%;
 }
 
+/**
+    Bootstap overrides
+
+    I would change the SCSS, but gotta do it like this,
+    so that it works on fresh libman dependency
+*/
+
+/**
+    Buttons
+*/
 .btn-primary {
     border-color: rgba(0, 0, 0, 0.1) !important;
     background-color: var(--primary) !important;
@@ -31,8 +41,6 @@ body {
 .btn-primary:focus, .btn-primary.focus {
     box-shadow: 0 0 0 .1rem var(--primary-focus) !important;
 }
-
-
 
 
 
