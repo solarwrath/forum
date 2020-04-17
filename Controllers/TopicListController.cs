@@ -23,9 +23,9 @@ namespace FORUM_PROJECT.Controllers
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            _logger.LogCritical("In topiclist");
             IEnumerable<Topic> topics = await _topicService.GetAllTopicsAsync();
 
             return View(topics);

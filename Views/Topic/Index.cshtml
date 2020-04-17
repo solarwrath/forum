@@ -16,8 +16,8 @@
 <div>
     <h2>Add Post</h2>
     <form asp-action="AddPost" asp-controller="Topic" method="post">
-        <textarea name="postMessage"></textarea>
-        <button type="submit">Post</button>
+        <textarea class="form-control" name="postMessage"></textarea>
+        <button class="btn btn-primary" type="submit">Post</button>
         <input type="hidden" name="topicId" value="@Model.Id"/>
         @Model.Id
     </form>

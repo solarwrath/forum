@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model FORUM_PROJECT.ViewModels.CreateTopicViewModel
+
+@{
+    ViewData["Title"] = "Create Topic";
+}
+
+<div class="container auth d-flex flex-column justify-content-center align-items-center">
+    <div class="form-wrapper d-flex flex-column justify-content-center align-items-center">
+        <h1 class="title">Create Topic</h1>
+        <form asp-contoller="Auth" asp-action="CreateTopic" method="post">
+            @{
+                IEnumerable<String>? signUpErrors = (IEnumerable<String>)ViewData["signUpErrors"];
+                if (signUpErrors != null)
+                {
+                    foreach (var signUpError in signUpErrors)
+                    {
+                        <div class="alert alert-danger" role="alert">@signUpError</div>
+                    }
+                }
+            }
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" placeholder="Title" />
+                <span asp-validation-for="Title" class="text-danger" role="alert"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Message"></label>
+                <textarea asp-for="Message" class="form-control" placeholder="Your message"></textarea>
+            </div>
+            <div class="btn-row">
+                <button type="submit" class="btn btn-primary">Create Topic</button>
+            </div>
+        </form>
+    </div>
+</div>

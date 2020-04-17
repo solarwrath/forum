@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.Models;
+using FORUM_PROJECT.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -17,21 +19,26 @@ namespace FORUM_PROJECT.Controllers
         private ILogger<TopicController> _logger;
         private ForumContext _forumContext;
         private UserManager<User> _userManager;
+        public TopicService _topicService;
 
         public TopicController(
             ILogger<TopicController> logger,
             ForumContext forumContext,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            TopicService topicService)
         {
             _logger = logger;
             _forumContext = forumContext;
             _userManager = userManager;
+            _topicService = topicService;
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Index(int topicId)
         {
             var topic = await _forumContext.Topics.FindAsync(topicId);
+            topic.ViewCounter++;
             _forumContext.Entry(topic).Collection(topic => topic.Posts).Load();
             topic.Posts.ToList().ForEach(post => _forumContext.Entry(post).Reference(post => post.Author).Load());
 
@@ -48,12 +55,28 @@ namespace FORUM_PROJECT.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
             var topic = await _forumContext.Topics.FindAsync(topicId);
 
-            Post newPost = new Post {Author = user, Message = postMessage, TimePublished = DateTime.Now, Topic = topic, TopicId = topicId };
+            Post newPost = new Post { Author = user, Message = postMessage, TimePublished = DateTime.Now, Topic = topic, TopicId = topicId };
 
             await _forumContext.AddAsync(newPost);
             await _forumContext.SaveChangesAsync();
 
-            return RedirectToActionPermanent("Index", new {topicId=topicId});
+            return RedirectToActionPermanent("Index", new { topicId });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult CreateTopic()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateTopic(CreateTopicViewModel viewModel)
+        {
+            var createdTopicEntry = await _topicService.CreateTopic(viewModel.Title, viewModel.Message);
+
+            return RedirectToActionPermanent("Index", new { topicId = createdTopicEntry.Entity.Id });
         }
     }
 }
