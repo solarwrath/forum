@@ -55,6 +55,9 @@ namespace FORUM_PROJECT
 
             services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();
             services.AddScoped<TopicService>();
+
+            services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
+            services.AddScoped<UserService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

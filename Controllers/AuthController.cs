@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.Models;
 using FORUM_PROJECT.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -13,19 +14,17 @@ namespace FORUM_PROJECT.Controllers
     public class AuthController : Controller
     {
         private readonly ILogger<AuthController> _logger;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserService _userService;
 
         public AuthController(
             ILogger<AuthController> logger,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            UserService userService)
         {
             _logger = logger;
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
         }
 
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -39,18 +38,11 @@ namespace FORUM_PROJECT.Controllers
                 return RedirectToActionPermanent("Index", "TopicList");
             }
 
-            User user = await _userManager.FindByNameAsync(username);
+            bool loginSuccessful = await _userService.TryLoginUserAsync(username, password);
 
-            if (user != null)
+            if (loginSuccessful)
             {
-                _logger.LogCritical($"Found the user with username: {username} ");
-                var signInResult = await _signInManager.PasswordSignInAsync(user, password, false, false);
-
-                if (signInResult.Succeeded)
-                {
-                    _logger.LogCritical($"Signed in the user with username: {username} ");
-                    return RedirectToActionPermanent("Index", "TopicList");
-                }
+                return RedirectToActionPermanent("Index", "TopicList");
             }
 
             ViewData["hasLoginError"] = true;
@@ -58,6 +50,7 @@ namespace FORUM_PROJECT.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult SignUp()
         {
             return View();
@@ -73,6 +66,8 @@ namespace FORUM_PROJECT.Controllers
 
             if (!TryValidateModel(viewModel, nameof(UserSignUpViewModel)))
             {
+                _logger.LogError($"Validation errors for sign up of user with username '{viewModel.Username}': " +
+                                 $"{ModelState.Values.SelectMany(x => x.Errors).Select(e => e.ErrorMessage)}");
                 return View();
             }
 
@@ -80,32 +75,20 @@ namespace FORUM_PROJECT.Controllers
             string email = viewModel.Email;
             string password = viewModel.Password;
 
-            var user = new User
-            {
-                Email = email,
-                UserName = username,
-            };
+            IEnumerable<String>? errors = await _userService.TrySignUpUserAsync(username, password, email);
 
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (result.Succeeded)
+            if (errors == null)
             {
-                _logger.LogCritical($"Registered user with username: {username}");
-                //TODO Email veritifcation
                 return RedirectToActionPermanent("Index", "Home");
             }
-            else
-            {
-                _logger.LogCritical($"Couldn't register user with username: {username}");
-                ViewData["signUpError"] = result.Errors.First();
-            }
 
+            ViewData["signUpErrors"] = errors;
             return View();
         }
 
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _userService.SignOutUserAsync();
             return RedirectToActionPermanent("Index", "Home");
         }
     }

@@ -11,7 +11,6 @@ namespace FORUM_PROJECT.DAL
     {
         private ILogger<TopicService> _logger;
         private IGenericRepository<Topic> _repository;
-
         public TopicService(ILogger<TopicService> logger, IGenericRepository<Topic> repository)
         {
             _logger = logger;
