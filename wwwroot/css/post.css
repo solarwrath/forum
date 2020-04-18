@@ -1,0 +1,18 @@
+﻿.post {
+    padding: 20px 10px;
+    border-bottom: 2px solid #111111;
+}
+
+.post:first-of-type {
+    border-top: 2px solid #111111;
+}
+
+.edit-post-button {
+    margin-left: auto;
+    margin-bottom: auto;
+}
+
+.post-username {
+    font-weight: bold;
+    font-size: 1.2em;
+}

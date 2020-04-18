@@ -1,0 +1,32 @@
+﻿td > * {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+td.title, th.title {
+    width: 100%
+}
+
+td.author, th.author,
+td.replies, th.replies
+td.views, th.views,
+td.views, th.views,
+td.activity, th.activity {
+    width: auto;
+}
+
+.topic-entry-link::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.5em; /* don't forget to set the height! */
+}
+
+.table td, .table th {
+    border-color: #333 !important;
+}

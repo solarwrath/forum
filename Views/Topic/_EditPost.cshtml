@@ -1,0 +1,91 @@
+﻿<div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPostModalLabel">Edit post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="edit-post-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit-post-message" class="col-form-label">Your message:</label>
+                        <textarea class="form-control" id="edit-post-message" name="edit-post-message" required rows="8"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Send message</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--
+As it is a partial view we can't add js on-demand to the section (I probably am wrong, but haven't had any success)
+ASP.Net MVC Core changed API quite a lot, so old solutions like HtmlHelper extensions do not work.
+View Components do not have such option too. Only Razor Components of Blazor but that is such an overkill
+So I opted to inline script here
+-->
+<script>
+    const editPostModal = $('#editPostModal');
+    editPostModal.on('show.bs.modal',
+        (event) => {
+            const messageInput = $('#edit-post-message');
+
+            messageInput.trigger('focus');
+
+            const triggeredButton = $(event.relatedTarget); // Button that triggered the modal
+
+            const postId = triggeredButton.closest('.post').data('postId');
+
+            const messageElement = triggeredButton.closest('.post').children('.post-message').first();
+            const oldMessage = messageElement.text();
+            messageInput.val(oldMessage);
+
+            editPostModal.submit((event) => {
+                const requestData = {
+                    NewMessage: messageInput.val(),
+                    PostId: postId
+                };
+                
+                $.ajax({  
+                    method: "POST",  
+                    url: '@Url.Action("EditPost", "Post")',  
+                    data: JSON.stringify(requestData),  
+                    dataType: "json",  
+                    contentType: "application/json; charset=utf-8",  
+                    success: (response) => {
+                        if (response.success) {
+                            messageElement.text(requestData.NewMessage);
+                            editPostModal.modal('hide');
+                        } else {
+                            //Error on editing (wrong author etc.)
+                            handleEditingError();
+                        }
+                    },  
+                    //Internal server error
+                    error: handleEditingError
+                });
+
+                event.preventDefault();
+            });
+        });
+
+    editPostModal.on('hide.bs.modal',
+        () => {
+            $('#editPostModal .alert').remove();
+        });
+
+    function handleEditingError() {
+        const alertElement = $(`<div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+                                <strong>ERROR!</strong> Something went wrong; couldn't edit your post!
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`);
+        $('#edit-post-form').before(alertElement);
+    }
+</script>

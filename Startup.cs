@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 
 namespace FORUM_PROJECT
 {
@@ -22,17 +26,52 @@ namespace FORUM_PROJECT
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                //Enable hot reloading
+                .AddRazorRuntimeCompilation();
+
+            services.AddHttpContextAccessor();
 
             services.AddDbContext<ForumContext>(options =>
-                options.UseSqlServer(Configuration["connectionString"])
+                options.UseSqlServer(Configuration["ConnectionString"])
                 );
+
+            //Specify security requirements
+            services.AddIdentity<User, IdentityRole>(config =>
+                {
+                    config.User.RequireUniqueEmail = true;
+
+                    config.Password.RequiredLength = 6;
+                    config.Password.RequireDigit = false;
+                    config.Password.RequireNonAlphanumeric = false;
+                    config.Password.RequireUppercase = true;
+
+                    config.SignIn.RequireConfirmedEmail = false;
+                })
+                .AddEntityFrameworkStores<ForumContext>()
+                .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "ForumIdentity.Cookie";
+                config.LoginPath = "/Auth/Login";
+            });
+
+            //Need to send confirmation email
+            services.AddMailKit(config => config.UseMailKit(Configuration.GetSection("MailKit").Get<MailKitOptions>(), ServiceLifetime.Singleton));
+
+            services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();
+            services.AddScoped<TopicService>();
+
+            services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
+            services.AddScoped<UserService>();
+
+            services.AddScoped<IGenericRepository<Post>, GenericRepository<Post>>();
+            services.AddScoped<PostService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -42,7 +81,6 @@ namespace FORUM_PROJECT
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -50,6 +88,7 @@ namespace FORUM_PROJECT
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

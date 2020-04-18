@@ -1,0 +1,26 @@
+﻿@model TopicListEntryViewModel
+
+@section Styles {
+    <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
+}
+
+<!-- Can't wrap whole tr in <a> so hacking through ::before and position -->
+<tr>
+    <td class="title">
+        <a class="topic-entry-link" asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
+            @Model.Title
+        </a>
+    </td>
+    <td class="author">
+        <span>@Model.AuthorUsername</span>
+    </td>
+    <td class="replies">
+        <span>@Model.Replies</span>
+</td>
+    <td class="views">
+        <span>@Model.Views</span>
+</td>
+    <td class="activity">
+        <span>@Model.LastActivity</span>
+</td>
+</tr>

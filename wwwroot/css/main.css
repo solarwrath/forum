@@ -1,0 +1,66 @@
+﻿:root {
+    --primary: #d32f2f;
+    --primary-hover: #aa6659;
+    --primary-active: #9a0007;
+    --primary-focus: #ff6659;
+}
+
+body {
+    height: 100vh;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.form-control.pristine:invalid {
+    box-shadow: none;
+}
+/**
+    Bootstap overrides
+
+    I would change the SCSS, but gotta do it like this,
+    so that it works on fresh libman dependency
+*/
+/**
+    Buttons
+*/
+.btn-primary {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: var(--primary-hover) !important;
+}
+
+.btn-primary:active {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    background-color: var(--primary-active) !important;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+    box-shadow: 0 0 0 .1rem var(--primary-focus) !important;
+}
+
+
+
+.btn-outline-primary {
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-primary:active {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+    background-color: var(--primary-active) !important;
+}
+
+.btn-outline-primary:focus, .btn-outline-primary.focus {
+    box-shadow: 0 0 0 .1rem var(--primary-focus) !important;
+}
