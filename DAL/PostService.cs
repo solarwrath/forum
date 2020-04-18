@@ -36,6 +36,13 @@ namespace FORUM_PROJECT.DAL
         public async Task<bool> TryEditPostAsync(int postId, string newMessage)
         {
             _logger.LogInformation($"Attempting to edit post with id {postId}, new message: {newMessage}");
+
+            if (newMessage.Length == 0)
+            {
+                _logger.LogError($"Editing post failed, message is empty!");
+                return false;
+            }
+
             Post? post = await _repository.GetAsync(post => post.Id == postId);
 
             if (post == null)
@@ -72,6 +79,12 @@ namespace FORUM_PROJECT.DAL
         public async Task<bool> AddPostAsync(int topicId, string postMessage)
         {
             _logger.LogInformation($"Adding new post{{topicId: {topicId}; postMessage: {postMessage}}}");
+
+            if (postMessage.Length == 0)
+            {
+                _logger.LogError($"Adding new post failed, message is empty!");
+                return false;
+            }
 
             User? user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             if (user == null)

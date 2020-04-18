@@ -13,13 +13,15 @@ body {
     height: 100%;
 }
 
+.form-control.pristine:invalid {
+    box-shadow: none;
+}
 /**
     Bootstap overrides
 
     I would change the SCSS, but gotta do it like this,
     so that it works on fresh libman dependency
 */
-
 /**
     Buttons
 */

@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="edit-post-message" class="col-form-label">Your message:</label>
-                        <textarea class="form-control" id="edit-post-message" name="edit-post-message"></textarea>
+                        <textarea class="form-control" id="edit-post-message" name="edit-post-message" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -30,7 +30,8 @@ View Components do not have such option too. Only Razor Components of Blazor but
 So I opted to inline script here
 -->
 <script>
-    $('#editPostModal').on('show.bs.modal',
+    const editPostModal = $('#editPostModal');
+    editPostModal.on('show.bs.modal',
         (event) => {
             const messageInput = $('#edit-post-message');
 
@@ -44,7 +45,7 @@ So I opted to inline script here
             const oldMessage = messageElement.text();
             messageInput.val(oldMessage);
 
-            $('#edit-post-form').submit((event) => {
+            editPostModal.submit((event) => {
                 const requestData = {
                     NewMessage: messageInput.val(),
                     PostId: postId
@@ -56,27 +57,35 @@ So I opted to inline script here
                     data: JSON.stringify(requestData),  
                     dataType: "json",  
                     contentType: "application/json; charset=utf-8",  
-                    success: function (response) {
+                    success: (response) => {
                         if (response.success) {
                             messageElement.text(requestData.NewMessage);
+                            editPostModal.modal('hide');
                         } else {
                             //Error on editing (wrong author etc.)
                             handleEditingError();
                         }
-                        console.log(response);
                     },  
                     //Internal server error
-                    error: function () {  
-                        handleEditingError();
-                    }  
+                    error: handleEditingError
                 });
 
                 event.preventDefault();
             });
         });
 
+    editPostModal.on('hide.bs.modal',
+        () => {
+            $('#editPostModal .alert').remove();
+        });
+
     function handleEditingError() {
-        //TODO DIsplay error
-        console.log('error');
+        const alertElement = $(`<div class="alert alert-danger alert-dismissible fade show m-1" role="alert">
+                                <strong>ERROR!</strong> Something went wrong; couldn't edit your post!
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>`);
+        $('#edit-post-form').before(alertElement);
     }
 </script>

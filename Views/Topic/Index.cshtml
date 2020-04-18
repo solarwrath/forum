@@ -37,7 +37,12 @@
 <div>
     <h2>Add Post</h2>
     <form id="add-post-form" data-topic-id="@Model.Id">
-        <textarea class="form-control" name="addPostMessage"></textarea>
+        <!-- Can't set form to pristine state, but want to empty textarea after submit while using ajax.
+        After emptying it becomes invalid (has been focused already), but it is actually valid from UX perspective
+        Tried to replace dom node, but we use  window.location.reload
+        So disabling the border here, there probably is a better solution
+        -->
+        <textarea class="form-control pristine" name="addPostMessage" required></textarea>
         <button class="btn btn-primary" type="submit">Post</button>
     </form>
 </div>
