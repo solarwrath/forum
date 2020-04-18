@@ -9,12 +9,13 @@
     @RenderSection("Styles", required: false)
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/3e91ccf544.js" crossorigin="anonymous"></script>
 </head>
 <body class="d-flex flex-column">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="navbar-brand text-primary" asp-controller="Home" asp-action="Index">Home</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,16 +29,16 @@
                         @if (!User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Log In</a>
+                                <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="Login">Log In</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="SignUp">Sign Up</a>
+                                <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="SignUp">Sign Up</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-info" asp-area="" asp-controller="Auth" asp-action="Logout">Log Out</a>
+                                <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="Logout">Log Out</a>
                             </li>
                         }
                     </ul>
@@ -46,7 +47,7 @@
         </nav>
     </header>
     <div class="container flex-grow-1">
-        <main role="main" class="pb-3 main-content">
+        <main role="main" class="pb-3 full-height">
             @RenderBody()
         </main>
     </div>

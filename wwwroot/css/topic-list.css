@@ -26,3 +26,7 @@ td.activity, th.activity {
     width: 100%;
     height: 1.5em; /* don't forget to set the height! */
 }
+
+.table td, .table th {
+    border-color: #333 !important;
+}

@@ -1,51 +1,59 @@
-﻿@model Topic
+﻿@using FORUM_PROJECT.Utils
+@model Topic
+
 @{
     ViewData["Title"] = @Model.Title;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/post.css" />
 }
 
 @section Scripts {
     <script src="~/js/add-post.js"></script>
 }
 
-<h1>@Model.Title</h1>
+<h1 class="mb-3">@Model.Title</h1>
 @foreach (var currentPost in @Model.Posts)
 {
-    <div id="post-@currentPost.Id" style="border: 1px solid black;" class="post" data-post-id="@currentPost.Id">
-        @if (currentPost.Author != null && currentPost.Author.UserName == User.Identity.Name)
-        {
-            <button type="button" class="btn btn-primary"
-                    data-toggle="modal"
-                    data-target="#editPostModal">
-                Edit
-            </button>
-        }
-    <p class="post-username">
-        @if (currentPost.Author != null)
-        {
-            @currentPost.Author.UserName
-        }
-        else
-        {
-            @("UFO");
-        }
-    </p>
+    <div id="post-@currentPost.Id" class="post" data-post-id="@currentPost.Id">
+        <div class="d-flex">
+            <p class="post-username">
+                @if (currentPost.Author != null)
+                {
+                    @currentPost.Author.UserName
+                }
+                else
+                {
+                    @("UFO");
+                }
+            </p>
+            @if (currentPost.Author != null && currentPost.Author.UserName == User.Identity.Name)
+            {
+                <button type="button" class="btn btn-primary edit-post-button"
+                        data-toggle="modal"
+                        data-target="#editPostModal">
+                    <i class="fas fa-edit"></i>
+                </button>
+            }
+        </div>
         <p class="post-message">@currentPost.Message</p>
-        <p class="post-time-published">@currentPost.TimePublished</p>
+        <p class="post-time-published text-muted">@currentPost.TimePublished.GetElapsedTimeHumanReadable()</p>
     </div>
 }
 
-<div>
-    <h2>Add Post</h2>
+<section>
+    <h2 class="mt-4 mb-2">Add Post</h2>
     <form id="add-post-form" data-topic-id="@Model.Id">
         <!-- Can't set form to pristine state, but want to empty textarea after submit while using ajax.
         After emptying it becomes invalid (has been focused already), but it is actually valid from UX perspective
         Tried to replace dom node, but we use  window.location.reload
         So disabling the border here, there probably is a better solution
         -->
-        <textarea class="form-control pristine" name="addPostMessage" required></textarea>
+        <textarea class="form-control pristine" name="addPostMessage" required rows="8"></textarea>
         <button class="btn btn-primary" type="submit">Post</button>
     </form>
-</div>
+</section>
 
 @Html.Partial("./_EditPost")
 

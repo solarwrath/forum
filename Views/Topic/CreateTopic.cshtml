@@ -5,8 +5,8 @@
     ViewData["Title"] = "Create Topic";
 }
 
-<div class="container auth d-flex flex-column justify-content-center align-items-center">
-    <div class="form-wrapper d-flex flex-column justify-content-center align-items-center">
+<div class="container d-flex flex-column justify-content-center full-height">
+    <div class="form-wrapper d-flex flex-column justify-content-center">
         <h1 class="title">Create Topic</h1>
         <form asp-contoller="Auth" asp-action="CreateTopic" method="post">
             @{
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Message"></label>
-                <textarea asp-for="Message" class="form-control" placeholder="Your message"></textarea>
+                <textarea asp-for="Message" class="form-control" placeholder="Your message" rows="8"></textarea>
             </div>
             <div class="btn-row">
                 <button type="submit" class="btn btn-primary">Create Topic</button>
