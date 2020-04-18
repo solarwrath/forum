@@ -59,13 +59,15 @@ namespace FORUM_PROJECT.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddPost(int topicId, string postMessage)
+        public async Task<IActionResult> AddPost([FromBody] AddPostViewModel viewModel)
         {
-            bool success = await _postService.AddPostAsync(topicId, postMessage);
-
-            //TODO AJAX HERE
-
-            return RedirectToActionPermanent("Index", new { topicId });
+            _logger.LogInformation($"Id:{viewModel.TopicId}; Message: {viewModel.Message}");
+            bool success = await _postService.AddPostAsync(viewModel.TopicId, viewModel.Message);
+            
+            return Json(new
+            {
+                success,
+            });
         }
 
         [Authorize]

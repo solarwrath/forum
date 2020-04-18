@@ -3,10 +3,14 @@
     ViewData["Title"] = @Model.Title;
 }
 
+@section Scripts {
+    <script src="~/js/add-post.js"></script>
+}
+
 <h1>@Model.Title</h1>
 @foreach (var currentPost in @Model.Posts)
 {
-    <div style="border: 1px solid black;" class="post" data-post-id="@currentPost.Id">
+    <div id="post-@currentPost.Id" style="border: 1px solid black;" class="post" data-post-id="@currentPost.Id">
         @if (currentPost.Author != null && currentPost.Author.UserName == User.Identity.Name)
         {
             <button type="button" class="btn btn-primary"
@@ -23,12 +27,18 @@
 
 <div>
     <h2>Add Post</h2>
-    <form asp-action="AddPost" asp-controller="Topic" method="post">
-        <!-- TODO AJAX HERE-->
-        <textarea class="form-control" name="postMessage"></textarea>
+    <form id="add-post-form" data-topic-id="@Model.Id">
+        <textarea class="form-control" name="addPostMessage"></textarea>
         <button class="btn btn-primary" type="submit">Post</button>
-        <input type="hidden" name="topicId" value="@Model.Id"/>
     </form>
 </div>
 
-@Html.Partial("./_EditPost");
+@Html.Partial("./_EditPost")
+
+<script>
+    //Kind of weird to pass url but there is no option to get it in separate js file
+    $(document).ready(() => {
+        const addPostActionUrl = '@Url.Action("AddPost", "Topic")';
+        setAddPostEvent(addPostActionUrl);
+    });
+</script>

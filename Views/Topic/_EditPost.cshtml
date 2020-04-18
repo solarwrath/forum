@@ -58,7 +58,6 @@ So I opted to inline script here
                     contentType: "application/json; charset=utf-8",  
                     success: function (response) {
                         if (response.success) {
-                            //TODO DIsplay success and close after timeout
                             messageElement.text(requestData.NewMessage);
                         } else {
                             //Error on editing (wrong author etc.)
