@@ -35,7 +35,7 @@ namespace FORUM_PROJECT
             services.AddHttpContextAccessor();
 
             services.AddDbContext<ForumContext>(options =>
-                options.UseSqlServer(Configuration["connectionString"])
+                options.UseSqlServer(Configuration["ConnectionString"])
                 );
 
             //Specify security requirements
