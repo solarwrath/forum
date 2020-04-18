@@ -1,11 +1,28 @@
-﻿@model  IEnumerable<Topic>
+﻿@using Microsoft.CodeAnalysis
+@model IEnumerable<Topic>
 @{
     ViewData["Title"] = "Forum";
 }
 
-<h1>Forum</h1>
-@foreach (var topic in Model)
-{
-    @await Html.PartialAsync("./_TopicListEntry", topic);
+
+@section Styles {
+    <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
 }
+<h1>Forum</h1>
 <a asp-action="CreateTopic" asp-controller="Topic" class="btn btn-success">Create New Topic</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="title">Topic</th>
+            <th class="author">Last Author</th>
+            <th class="views">Views</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var topic in Model)
+        {
+            @await Html.PartialAsync("./_TopicListEntry", topic)
+            ;
+        }
+    </tbody>
+</table>

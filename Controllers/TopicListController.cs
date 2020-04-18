@@ -26,7 +26,7 @@ namespace FORUM_PROJECT.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Topic> topics = await _topicService.GetAllTopicsAsync();
+            IEnumerable<Topic> topics = await _topicService.GetAllTopicsAsync();    
 
             return View(topics);
         }

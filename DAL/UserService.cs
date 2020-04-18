@@ -90,6 +90,8 @@ namespace FORUM_PROJECT.DAL
 
         public async Task<IEnumerable<string>?> TrySignUpUserAsync(string username, string password, string email)
         {
+            username = username.Trim();
+                
             var user = new User
             {
                 Email = email,

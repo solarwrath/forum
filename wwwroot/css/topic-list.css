@@ -1,0 +1,22 @@
+﻿td > * {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+td.title, th.title {
+    width: 60%;
+    max-width: 60%;
+}
+
+td.author, th.author {
+    width: 30%;
+    max-width: 60%;
+}
+
+td.views, th.views {
+    width: 10%;
+    max-width: 60%;
+}

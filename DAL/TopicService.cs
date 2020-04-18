@@ -36,14 +36,39 @@ namespace FORUM_PROJECT.DAL
         public IEnumerable<Topic> GetAllTopics()
         {
             IEnumerable<Topic>  topics = _repository.GetAll();
+            topics.ToList().ForEach(topic =>
+            {
+                _forumContext.Entry(topic).Reference(topic => topic.Title).Load();
+            });
+
             _logger.LogDebug($"Got topics: {topics}");
 
             return topics;
         }
 
+        public Post GetLastPost(IEnumerable<Post> posts)
+        {
+            if (posts != null && posts.Count() != 0)
+            {
+                var postsList = posts.ToList();
+                postsList.Sort((a, b) => a.TimePublished.CompareTo(b.TimePublished));
+                return postsList.Last();
+            }
+
+            return null;
+        }
+
         public async Task<IEnumerable<Topic>> GetAllTopicsAsync()
         {
             IEnumerable<Topic> topics = await _repository.GetAllAsync();
+            topics.ToList().ForEach(topic =>
+            {
+                _forumContext.Entry(topic).Collection(topic => topic.Posts).Load();
+
+                var lastPost = GetLastPost(topic.Posts);
+                _forumContext.Entry(lastPost).Reference(post => post.Author).Load();
+            });
+
             _logger.LogDebug($"Got topics: {topics}");
 
             return topics;
@@ -53,7 +78,7 @@ namespace FORUM_PROJECT.DAL
         {
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
-            Topic topic = new Topic{Title = title};
+            Topic topic = new Topic{Title = title.Trim()};
             topic.Posts = new[] { new Post { Topic = topic, Author = user, Message = message, TimePublished = DateTime.Now } };
             _logger.LogInformation($"Craeted topic: {topic}");
 

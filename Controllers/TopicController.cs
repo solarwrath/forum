@@ -37,15 +37,28 @@ namespace FORUM_PROJECT.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int topicId)
         {
-            var topic = await _forumContext.Topics.FindAsync(topicId);
-            topic.ViewCounter++;
-            _forumContext.Entry(topic).Collection(topic => topic.Posts).Load();
-            topic.Posts.ToList().ForEach(post => _forumContext.Entry(post).Reference(post => post.Author).Load());
-
-            _logger.LogCritical($"Got topic to display id: {topicId}. Topic is null : {topic == null}; PostsCount: {topic.Posts.Count()}");
             //TODO Handle error
+            var topic = await _forumContext.Topics.FindAsync(topicId);
 
-            return View(topic);
+            if (topic != null)
+            {
+                _logger.LogInformation($"Got topic with index: {topicId}");
+                await _forumContext.Entry(topic).Collection(topic => topic.Posts).LoadAsync();
+                topic.Posts.ToList().ForEach(post =>
+                {
+                    _forumContext.Entry(post).Reference(post => post.Author).Load();
+                    _logger.LogInformation(post.Author.UserName);
+                });
+                await _topicService.incrementViewCounter(topic);
+
+                return View(topic);
+            }
+            else
+            {
+                _logger.LogError($"Tried to load topic with index: {topicId} but there is no such topic!");
+
+                return NotFound();
+            }
         }
 
         [Authorize]

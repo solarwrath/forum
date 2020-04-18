@@ -48,7 +48,7 @@ namespace FORUM_PROJECT
                     config.Password.RequireNonAlphanumeric = false;
                     config.Password.RequireUppercase = false;
 
-                    config.SignIn.RequireConfirmedEmail = true;
+                    config.SignIn.RequireConfirmedEmail = false;
                 })
                 .AddEntityFrameworkStores<ForumContext>()
                 .AddDefaultTokenProviders();

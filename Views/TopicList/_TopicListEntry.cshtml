@@ -1,5 +1,31 @@
 ﻿@model Topic
 
-<div>
-    <a asp-route-topicId="@Model.Id" asp-controller="Topic" asp-action="Index">@Model.Title</a>
-</div>
+@{
+    string lastPosterUsername = "UFO";
+    
+    string topicTitleClipped = @Model.Title.Substring(0, Math.Min(@Model.Title.Length, 80));;
+
+    if (@Model.Posts != null && @Model.Posts.Count() != 0)
+    {
+        var posts = @Model.Posts.ToList();
+        posts.Sort((a, b) => a.TimePublished.CompareTo(b.TimePublished));
+        lastPosterUsername = posts.Last().Author.UserName;
+    }
+
+    string authorClipped = lastPosterUsername.Substring(0, Math.Min(lastPosterUsername, 20));;
+}
+
+@section Styles {
+    <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
+}
+<tr>
+    <td class="title">
+        <a asp-route-topicId="@Model.Id" asp-controller="Topic" asp-action="Index">@topicTitleClipped</a>
+    </td>
+    <td class="author">
+        <span style="margin-left: 10px">@authorClipped</span>
+    </td>
+    <td class="views">
+        <span style="margin-left: 10px">@Model.ViewCounter</span>
+    </td>
+</tr>
