@@ -6,10 +6,16 @@
 <h1>@Model.Title</h1>
 @foreach (var currentPost in @Model.Posts)
 {
-    <div style="border: 1px solid black;">
-        <p>@currentPost.Author.UserName</p>
-        <p>@currentPost.Message</p>
-        <p>@currentPost.TimePublished</p>
+    <div style="border: 1px solid black;" class="post" data-post-id="@currentPost.Id">
+        @if (currentPost.Author.UserName == User.Identity.Name)
+        {
+            <button type="button" class="btn btn-primary" 
+                    data-toggle="modal" 
+                    data-target="#editPostModal" >Edit</button>
+        }
+        <p class="post-username">@currentPost.Author.UserName</p>
+        <p class="post-message">@currentPost.Message</p>
+        <p class="post-time-published">@currentPost.TimePublished</p>
     </div>
 }
 
@@ -18,6 +24,8 @@
     <form asp-action="AddPost" asp-controller="Topic" method="post">
         <textarea class="form-control" name="postMessage"></textarea>
         <button class="btn btn-primary" type="submit">Post</button>
-        <input type="hidden" name="topicId" value="@Model.Id"/>
+        <input type="hidden" name="topicId" value="@Model.Id" />
     </form>
 </div>
+
+@Html.Partial("./_EditPost");

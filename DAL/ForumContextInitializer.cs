@@ -14,8 +14,7 @@ namespace FORUM_PROJECT.Models
             UserManager<User> userManager)
         {
             //Drop and recreate database
-            context.Database.EnsureDeleted();
-            context.Database.Migrate();
+            context.Database.EnsureDeleted(); context.Database.Migrate();
 
             //TODO Get better demo data
 

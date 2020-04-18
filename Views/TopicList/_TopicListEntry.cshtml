@@ -1,31 +1,34 @@
-﻿@model Topic
-
-@{
-    string lastPosterUsername = "UFO";
-    
-    string topicTitleClipped = @Model.Title.Substring(0, Math.Min(@Model.Title.Length, 80));;
-
-    if (@Model.Posts != null && @Model.Posts.Count() != 0)
-    {
-        var posts = @Model.Posts.ToList();
-        posts.Sort((a, b) => a.TimePublished.CompareTo(b.TimePublished));
-        lastPosterUsername = posts.Last().Author.UserName;
-    }
-
-    string authorClipped = lastPosterUsername.Substring(0, Math.Min(lastPosterUsername, 20));;
-}
+﻿@model TopicListEntryViewModel
 
 @section Styles {
     <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
 }
+
+<!-- Can't wrap whole tr in <a> so getting multiple of then -->
 <tr>
     <td class="title">
-        <a asp-route-topicId="@Model.Id" asp-controller="Topic" asp-action="Index">@topicTitleClipped</a>
+        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
+            @Model.Title
+        </a>
     </td>
     <td class="author">
-        <span style="margin-left: 10px">@authorClipped</span>
+        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
+            @Model.AuthorUsername
+        </a>
     </td>
-    <td class="views">
-        <span style="margin-left: 10px">@Model.ViewCounter</span>
+    <td class="replies">
+        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
+            @Model.Replies
+        </a>
+    </td>
+    <td class="aiews">
+        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
+            @Model.Views
+        </a>
+    </td>
+    <td class="activity">
+        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
+            @Model.LastActivity
+        </a>
     </td>
 </tr>

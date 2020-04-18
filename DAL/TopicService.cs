@@ -46,18 +46,6 @@ namespace FORUM_PROJECT.DAL
             return topics;
         }
 
-        public Post GetLastPost(IEnumerable<Post> posts)
-        {
-            if (posts != null && posts.Count() != 0)
-            {
-                var postsList = posts.ToList();
-                postsList.Sort((a, b) => a.TimePublished.CompareTo(b.TimePublished));
-                return postsList.Last();
-            }
-
-            return null;
-        }
-
         public async Task<IEnumerable<Topic>> GetAllTopicsAsync()
         {
             IEnumerable<Topic> topics = await _repository.GetAllAsync();
@@ -65,8 +53,10 @@ namespace FORUM_PROJECT.DAL
             {
                 _forumContext.Entry(topic).Collection(topic => topic.Posts).Load();
 
-                var lastPost = GetLastPost(topic.Posts);
-                _forumContext.Entry(lastPost).Reference(post => post.Author).Load();
+                var posts = topic.Posts.ToList();
+                posts.Sort((a, b) => a.TimePublished.CompareTo(b.TimePublished));
+
+                _forumContext.Entry(posts.First()).Reference(post => post.Author).Load();
             });
 
             _logger.LogDebug($"Got topics: {topics}");

@@ -91,5 +91,12 @@ namespace FORUM_PROJECT.Controllers
 
             return RedirectToActionPermanent("Index", new { topicId = createdTopicEntry.Entity.Id });
         }
+
+        [Authorize]
+        [HttpPost]
+        public void EditPost(int postId, string newMessage)
+        {
+
+        }
     }
 }

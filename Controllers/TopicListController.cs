@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.Models;
+using FORUM_PROJECT.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +27,43 @@ namespace FORUM_PROJECT.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Topic> topics = await _topicService.GetAllTopicsAsync();    
+            IEnumerable<Topic> topics = await _topicService.GetAllTopicsAsync();
 
-            return View(topics);
+            var viewModels = topics.Select(topic =>
+            {
+                TopicListEntryViewModel viewModel = new TopicListEntryViewModel();
+
+                viewModel.TopicId = topic.Id;
+
+                viewModel.Title = topic.Title;
+                if (topic.Title.Length > 80)
+                {
+                    viewModel.Title = topic.Title.Substring(0, Math.Min(topic.Title.Length, 79)) + '…';
+                }
+
+                viewModel.Views = topic.ViewCounter;
+
+                var posts = topic.Posts.ToList();
+                posts.Sort((a, b) => a.TimePublished.CompareTo(b.TimePublished));
+
+                Post firstPost = posts.First();
+
+                string authorUsername = firstPost.Author.UserName;
+                if (authorUsername.Length > 20)
+                {
+                    authorUsername = authorUsername.Substring(0, Math.Min(authorUsername.Length, 19)) + '…';
+                }
+
+                viewModel.AuthorUsername = authorUsername;
+
+                viewModel.Replies = (uint)(topic.Posts.Count() - 1);
+
+                viewModel.LastActivity = posts.Last().TimePublished.GetElapsedTimeHumanReadable();
+
+                return viewModel;
+            });
+
+            return View(viewModels);
         }
     }
 }

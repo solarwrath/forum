@@ -1,5 +1,5 @@
 ﻿@using Microsoft.CodeAnalysis
-@model IEnumerable<Topic>
+@model IEnumerable<TopicListEntryViewModel>
 @{
     ViewData["Title"] = "Forum";
 }
@@ -8,21 +8,24 @@
 @section Styles {
     <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
 }
-<h1>Forum</h1>
-<a asp-action="CreateTopic" asp-controller="Topic" class="btn btn-success">Create New Topic</a>
+<div class="row align-items-center">
+    <h1>Forum</h1>
+    <a asp-action="CreateTopic" asp-controller="Topic" class="btn btn-success ml-auto create-topic-btn">Create New Topic</a>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th class="title">Topic</th>
-            <th class="author">Last Author</th>
+            <th class="author">Author</th>
+            <th class="replies">Replies</th>
             <th class="views">Views</th>
+            <th class="activity">Activity</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var topic in Model)
         {
-            @await Html.PartialAsync("./_TopicListEntry", topic)
-            ;
+            @await Html.PartialAsync("./_TopicListEntry", topic);
         }
     </tbody>
 </table>
