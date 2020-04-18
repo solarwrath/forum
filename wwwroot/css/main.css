@@ -1,8 +1,8 @@
 ﻿:root {
-    --primary: #9b6155;
-    --primary-hover: #73483f;
-    --primary-active: #664038;
-    --primary-focus: #cc7f70;
+    --primary: #d32f2f;
+    --primary-hover: #aa6659;
+    --primary-active: #9a0007;
+    --primary-focus: #ff6659;
 }
 
 body {

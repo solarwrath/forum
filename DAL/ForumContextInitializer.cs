@@ -30,7 +30,7 @@ namespace FORUM_PROJECT.Models
 
                 users.ForEach(user =>
                 {
-                    Task.Run(async ()=> await userManager.CreateAsync(user, "qwerty")).GetAwaiter().GetResult();
+                    Task.Run(async ()=> await userManager.CreateAsync(user, "Qwerty")).GetAwaiter().GetResult();
                 });
             
                 var posts = new List<Post>
@@ -52,11 +52,6 @@ namespace FORUM_PROJECT.Models
 
                 context.SaveChanges();
             }).GetAwaiter().GetResult();
-        }
-
-        public static async Task RegisterUser(User user, UserManager<User> userManager)
-        {
-            await userManager.CreateAsync(user, "qwerty");
         }
     }
 }

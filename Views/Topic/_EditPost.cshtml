@@ -41,7 +41,7 @@ So I opted to inline script here
 
             const postId = triggeredButton.closest('.post').data('postId');
 
-            const messageElement = triggeredButton.siblings('.post-message');
+            const messageElement = triggeredButton.closest('.post').children('.post-message').first();
             const oldMessage = messageElement.text();
             messageInput.val(oldMessage);
 

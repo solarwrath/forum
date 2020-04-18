@@ -46,7 +46,7 @@ namespace FORUM_PROJECT
                     config.Password.RequiredLength = 6;
                     config.Password.RequireDigit = false;
                     config.Password.RequireNonAlphanumeric = false;
-                    config.Password.RequireUppercase = false;
+                    config.Password.RequireUppercase = true;
 
                     config.SignIn.RequireConfirmedEmail = false;
                 })

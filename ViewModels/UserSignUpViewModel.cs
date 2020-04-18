@@ -15,7 +15,6 @@ namespace FORUM_PROJECT.ViewModels
         
         [Required]
         [DataType(DataType.Password)]
-        [StringLength(60, MinimumLength = 4)]
         public string Password { get; set; }
 
         [EmailAddress]
