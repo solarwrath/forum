@@ -19,7 +19,16 @@
                 Edit
             </button>
         }
-        <p class="post-username">@currentPost.Author.UserName</p>
+    <p class="post-username">
+        @if (currentPost.Author != null)
+        {
+            @currentPost.Author.UserName
+        }
+        else
+        {
+            @("UFO");
+        }
+    </p>
         <p class="post-message">@currentPost.Message</p>
         <p class="post-time-published">@currentPost.TimePublished</p>
     </div>
