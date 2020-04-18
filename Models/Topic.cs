@@ -17,7 +17,10 @@ namespace FORUM_PROJECT.Models
 
         public override string ToString()
         {
-            return $"{{Title: {Title}; Posts Count: {Posts.Count()}; ViewCounter: {ViewCounter}}}";
+            return $"{{Id: {Id};\n" +
+                   $"Title: {Title};\n" +
+                   $"Posts Count: {Posts.Count()};\n" +
+                   $"ViewCounter: {ViewCounter}}}";
         }
     }
 }
