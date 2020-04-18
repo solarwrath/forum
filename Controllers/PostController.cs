@@ -12,7 +12,7 @@ namespace FORUM_PROJECT.Controllers
 {
     public class PostController : Controller
     {
-        private PostService _postService;
+        private readonly PostService _postService;
         public PostController(
             PostService postService
         )
@@ -25,6 +25,18 @@ namespace FORUM_PROJECT.Controllers
         public async Task<IActionResult> EditPost([FromBody] EditPostViewModel editPostViewModel)
         {
             bool success = await _postService.TryEditPostAsync(editPostViewModel.PostId, editPostViewModel.NewMessage);
+
+            return Json(new
+            {
+                success,
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> AddPost([FromBody] AddPostViewModel viewModel)
+        {
+            bool success = await _postService.AddPostAsync(viewModel.TopicId, viewModel.Message);
 
             return Json(new
             {

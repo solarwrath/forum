@@ -16,21 +16,15 @@ namespace FORUM_PROJECT.Controllers
 {
     public class TopicController : Controller
     {
-        private readonly ILogger<TopicController> _logger;
         private readonly ForumContext _forumContext;
         private readonly TopicService _topicService;
-        private readonly PostService _postService;
 
         public TopicController(
-            ILogger<TopicController> logger,
             ForumContext forumContext,
-            TopicService topicService,
-            PostService postService)
+            TopicService topicService)
         {
-            _logger = logger;
             _forumContext = forumContext;
             _topicService = topicService;
-            _postService = postService;
         }
 
         [Authorize]
@@ -56,20 +50,7 @@ namespace FORUM_PROJECT.Controllers
                 return NotFound();
             }
         }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> AddPost([FromBody] AddPostViewModel viewModel)
-        {
-            _logger.LogInformation($"Id:{viewModel.TopicId}; Message: {viewModel.Message}");
-            bool success = await _postService.AddPostAsync(viewModel.TopicId, viewModel.Message);
-            
-            return Json(new
-            {
-                success,
-            });
-        }
-
+        
         [Authorize]
         [HttpGet]
         public IActionResult CreateTopic()
