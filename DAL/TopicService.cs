@@ -13,11 +13,11 @@ namespace FORUM_PROJECT.DAL
 {
     public class TopicService
     {
-        private ILogger<TopicService> _logger;
-        private IGenericRepository<Topic> _repository;
-        private UserManager<User> _userManager;
-        private IHttpContextAccessor _httpContextAccessor;
-        private ForumContext _forumContext;
+        private readonly ILogger<TopicService> _logger;
+        private readonly IGenericRepository<Topic> _repository;
+        private readonly UserManager<User> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ForumContext _forumContext;
 
         public TopicService(
             ILogger<TopicService> logger,
@@ -33,17 +33,20 @@ namespace FORUM_PROJECT.DAL
             _forumContext = forumContext;
         }
 
-        public IEnumerable<Topic> GetAllTopics()
+        public async Task<Topic?> GetTopicAsync(int topicId)
         {
-            IEnumerable<Topic>  topics = _repository.GetAll();
-            topics.ToList().ForEach(topic =>
+            Topic? topic = await _repository.GetAsync(topic => topic.Id == topicId);
+
+            if (topic == null)
             {
-                _forumContext.Entry(topic).Reference(topic => topic.Title).Load();
-            });
+                _logger.LogError($"Attempted to find topic with id {topicId}, but there is no such topic!");
+            }
+            else
+            {
+                _logger.LogInformation($"Found topic with id {topicId}!");
+            }
 
-            _logger.LogDebug($"Got topics: {topics}");
-
-            return topics;
+            return topic;
         }
 
         public async Task<IEnumerable<Topic>> GetAllTopicsAsync()
@@ -68,9 +71,9 @@ namespace FORUM_PROJECT.DAL
         {
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
-            Topic topic = new Topic{Title = title.Trim()};
+            Topic topic = new Topic { Title = title.Trim() };
             topic.Posts = new[] { new Post { Topic = topic, Author = user, Message = message, TimePublished = DateTime.Now } };
-            _logger.LogInformation($"Craeted topic: {topic}");
+            _logger.LogInformation($"Created topic: {topic}");
 
             return await _repository.AddAsync(topic);
         }
@@ -79,6 +82,7 @@ namespace FORUM_PROJECT.DAL
         {
             topic.ViewCounter++;
             await _forumContext.SaveChangesAsync();
+            _logger.LogInformation($"Incremented view counter for topic: {topic.Id}. New view counter: {topic.ViewCounter}");
         }
     }
 }

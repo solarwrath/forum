@@ -15,17 +15,15 @@ namespace FORUM_PROJECT.DAL
 {
     public class UserService
     {
-        private ILogger<UserService> _logger;
-        private IGenericRepository<User> _repository;
-        private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
-        private LinkGenerator _linkGenerator;
-        private IEmailService _emailService;
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger<UserService> _logger;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly LinkGenerator _linkGenerator;
+        private readonly IEmailService _emailService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserService(
             ILogger<UserService> logger,
-            IGenericRepository<User> repository,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             LinkGenerator linkGenerator,
@@ -34,7 +32,6 @@ namespace FORUM_PROJECT.DAL
             )
         {
             _logger = logger;
-            _repository = repository;
             _userManager = userManager;
             _signInManager = signInManager;
             _linkGenerator = linkGenerator;
@@ -44,7 +41,7 @@ namespace FORUM_PROJECT.DAL
 
         public async Task<bool> TryLoginUserAsync(string username, string password)
         {
-            User user = await _userManager.FindByNameAsync(username);
+            User? user = await _userManager.FindByNameAsync(username);
 
             if (user != null)
             {
@@ -55,11 +52,9 @@ namespace FORUM_PROJECT.DAL
                     _logger.LogInformation($"Successfully signed in the user with username '{username}' ");
                     return true;
                 }
-                else
-                {
-                    //We do not log passwords as that is not secure
-                    _logger.LogError($"Unsuccessful login for user with username '{username}'");
-                }
+
+                //We do not log passwords as that is not secure
+                _logger.LogError($"Unsuccessful login for user with username '{username}'");
             }
             else
             {
@@ -91,15 +86,13 @@ namespace FORUM_PROJECT.DAL
         public async Task<IEnumerable<string>?> TrySignUpUserAsync(string username, string password, string email)
         {
             username = username.Trim();
-                
+
             var user = new User
             {
                 Email = email,
                 UserName = username,
             };
-
-            var emailAlreadyExists = (await _userManager.FindByEmailAsync(email) != null);
-
+            
 
             var signUpResult = await _userManager.CreateAsync(user, password);
 
@@ -154,9 +147,9 @@ namespace FORUM_PROJECT.DAL
             _logger.LogInformation($"Sent confirmation link for user '{user.UserName}' with mail ${user.Email}");
         }
 
-        public async Task<bool> ConfirmEmail(string userId, string code)
+        public async Task<bool> TryConfirmEmail(string userId, string code)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            User? user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {

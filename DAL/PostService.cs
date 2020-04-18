@@ -13,11 +13,11 @@ namespace FORUM_PROJECT.DAL
 {
     public class PostService
     {
-        private ILogger<PostService> _logger;
-        private IGenericRepository<Post> _repository;
-        private UserManager<User> _userManager;
-        private IHttpContextAccessor _httpContextAccessor;
-        private ForumContext _forumContext;
+        private readonly ILogger<PostService> _logger;
+        private readonly IGenericRepository<Post> _repository;
+        private readonly UserManager<User> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ForumContext _forumContext;
 
         public PostService(
             ILogger<PostService> logger,
@@ -36,7 +36,7 @@ namespace FORUM_PROJECT.DAL
         public async Task<bool> TryEditPostAsync(int postId, string newMessage)
         {
             _logger.LogInformation($"Attempting to edit post with id {postId}, new message: {newMessage}");
-            Post post = await _repository.GetAsync(post => post.Id == postId);
+            Post? post = await _repository.GetAsync(post => post.Id == postId);
 
             if (post == null)
             {
@@ -44,8 +44,8 @@ namespace FORUM_PROJECT.DAL
 
                 return false;
             }
-            
-            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+
+            User? user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
             if (user == null)
             {
@@ -65,6 +65,34 @@ namespace FORUM_PROJECT.DAL
             await _forumContext.SaveChangesAsync();
 
             _logger.LogInformation($"Edited post with id {postId}, new message: {newMessage}");
+
+            return true;
+        }
+
+        public async Task<bool> AddPostAsync(int topicId, string postMessage)
+        {
+            _logger.LogInformation($"Adding new post{{topicId: {topicId}; postMessage: {postMessage}}}");
+
+            User? user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            if (user == null)
+            {
+                _logger.LogError($"Adding new post failed, current user is null!");
+                return false;
+            }
+
+            Topic? topic = await _forumContext.Topics.FindAsync(topicId);
+            if (topic == null)
+            {
+                _logger.LogError($"Adding new post failed, there is no such topic!");
+                return false;
+            }
+
+            Post newPost = new Post { Author = user, Message = postMessage, TimePublished = DateTime.Now, Topic = topic, TopicId = topicId };
+
+            await _forumContext.AddAsync(newPost);
+            await _forumContext.SaveChangesAsync();
+
+            _logger.LogInformation($"Have successfully added new post: {newPost}");
 
             return true;
         }

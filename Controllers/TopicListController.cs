@@ -14,8 +14,8 @@ namespace FORUM_PROJECT.Controllers
 {
     public class TopicListController : Controller
     {
-        private ILogger<TopicListController> _logger;
-        private TopicService _topicService;
+        private readonly ILogger<TopicListController> _logger;
+        private readonly TopicService _topicService;
 
         public TopicListController(ILogger<TopicListController> logger, TopicService topicService)
         {
@@ -48,10 +48,15 @@ namespace FORUM_PROJECT.Controllers
 
                 Post firstPost = posts.First();
 
-                string authorUsername = firstPost.Author.UserName;
-                if (authorUsername.Length > 20)
+                string authorUsername = "UFO";
+                if (firstPost.Author != null)
                 {
-                    authorUsername = authorUsername.Substring(0, Math.Min(authorUsername.Length, 19)) + '…';
+                    authorUsername = firstPost.Author.UserName;
+
+                    if (authorUsername.Length > 20)
+                    {
+                        authorUsername = authorUsername.Substring(0, Math.Min(authorUsername.Length, 19)) + '…';
+                    }
                 }
 
                 viewModel.AuthorUsername = authorUsername;
@@ -62,6 +67,8 @@ namespace FORUM_PROJECT.Controllers
 
                 return viewModel;
             });
+
+            _logger.LogInformation("Generated viewmodels for topic list");
 
             return View(viewModels);
         }

@@ -95,7 +95,7 @@ namespace FORUM_PROJECT.Controllers
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            bool confirmedSuccessfully = await _userService.ConfirmEmail(userId, code);
+            bool confirmedSuccessfully = await _userService.TryConfirmEmail(userId, code);
 
             if (confirmedSuccessfully)
             {

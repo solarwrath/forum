@@ -16,62 +16,54 @@ namespace FORUM_PROJECT.Controllers
 {
     public class TopicController : Controller
     {
-        private ILogger<TopicController> _logger;
-        private ForumContext _forumContext;
-        private UserManager<User> _userManager;
-        public TopicService _topicService;
+        private readonly ILogger<TopicController> _logger;
+        private readonly ForumContext _forumContext;
+        private readonly TopicService _topicService;
+        private readonly PostService _postService;
 
         public TopicController(
             ILogger<TopicController> logger,
             ForumContext forumContext,
-            UserManager<User> userManager,
-            TopicService topicService)
+            TopicService topicService,
+            PostService postService)
         {
             _logger = logger;
             _forumContext = forumContext;
-            _userManager = userManager;
             _topicService = topicService;
+            _postService = postService;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index(int topicId)
         {
-            //TODO Handle error
-            var topic = await _forumContext.Topics.FindAsync(topicId);
+            Topic? topic = await _topicService.GetTopicAsync(topicId);
 
             if (topic != null)
             {
-                _logger.LogInformation($"Got topic with index: {topicId}");
                 await _forumContext.Entry(topic).Collection(topic => topic.Posts).LoadAsync();
                 topic.Posts.ToList().ForEach(post =>
                 {
                     _forumContext.Entry(post).Reference(post => post.Author).Load();
-                    _logger.LogInformation(post.Author.UserName);
                 });
+
                 await _topicService.incrementViewCounter(topic);
 
                 return View(topic);
             }
             else
             {
-                _logger.LogError($"Tried to load topic with index: {topicId} but there is no such topic!");
-
                 return NotFound();
             }
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddPost(string postMessage, int topicId)
+        public async Task<IActionResult> AddPost(int topicId, string postMessage)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var topic = await _forumContext.Topics.FindAsync(topicId);
+            bool success = await _postService.AddPostAsync(topicId, postMessage);
 
-            Post newPost = new Post { Author = user, Message = postMessage, TimePublished = DateTime.Now, Topic = topic, TopicId = topicId };
-
-            await _forumContext.AddAsync(newPost);
-            await _forumContext.SaveChangesAsync();
+            //TODO AJAX HERE
 
             return RedirectToActionPermanent("Index", new { topicId });
         }
@@ -90,13 +82,6 @@ namespace FORUM_PROJECT.Controllers
             var createdTopicEntry = await _topicService.CreateTopic(viewModel.Title, viewModel.Message);
 
             return RedirectToActionPermanent("Index", new { topicId = createdTopicEntry.Entity.Id });
-        }
-
-        [Authorize]
-        [HttpPost]
-        public void EditPost(int postId, string newMessage)
-        {
-
         }
     }
 }

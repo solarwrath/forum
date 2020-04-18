@@ -7,11 +7,13 @@
 @foreach (var currentPost in @Model.Posts)
 {
     <div style="border: 1px solid black;" class="post" data-post-id="@currentPost.Id">
-        @if (currentPost.Author.UserName == User.Identity.Name)
+        @if (currentPost.Author != null && currentPost.Author.UserName == User.Identity.Name)
         {
-            <button type="button" class="btn btn-primary" 
-                    data-toggle="modal" 
-                    data-target="#editPostModal" >Edit</button>
+            <button type="button" class="btn btn-primary"
+                    data-toggle="modal"
+                    data-target="#editPostModal">
+                Edit
+            </button>
         }
         <p class="post-username">@currentPost.Author.UserName</p>
         <p class="post-message">@currentPost.Message</p>
@@ -22,9 +24,10 @@
 <div>
     <h2>Add Post</h2>
     <form asp-action="AddPost" asp-controller="Topic" method="post">
+        <!-- TODO AJAX HERE-->
         <textarea class="form-control" name="postMessage"></textarea>
         <button class="btn btn-primary" type="submit">Post</button>
-        <input type="hidden" name="topicId" value="@Model.Id" />
+        <input type="hidden" name="topicId" value="@Model.Id"/>
     </form>
 </div>
 
