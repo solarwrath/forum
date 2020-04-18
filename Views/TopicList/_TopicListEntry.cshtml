@@ -4,31 +4,23 @@
     <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
 }
 
-<!-- Can't wrap whole tr in <a> so getting multiple of then -->
+<!-- Can't wrap whole tr in <a> so hacking through ::before and position -->
 <tr>
     <td class="title">
-        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
+        <a class="topic-entry-link" asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
             @Model.Title
         </a>
     </td>
     <td class="author">
-        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
-            @Model.AuthorUsername
-        </a>
+        <span>@Model.AuthorUsername</span>
     </td>
     <td class="replies">
-        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
-            @Model.Replies
-        </a>
-    </td>
-    <td class="aiews">
-        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
-            @Model.Views
-        </a>
-    </td>
+        <span>@Model.Replies</span>
+</td>
+    <td class="views">
+        <span>@Model.Views</span>
+</td>
     <td class="activity">
-        <a asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
-            @Model.LastActivity
-        </a>
-    </td>
+        <span>@Model.LastActivity</span>
+</td>
 </tr>
