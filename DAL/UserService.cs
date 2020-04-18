@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
-using NETCore.MailKit.Core;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace FORUM_PROJECT.DAL
 {
@@ -19,7 +20,6 @@ namespace FORUM_PROJECT.DAL
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly LinkGenerator _linkGenerator;
-        private readonly IEmailService _emailService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserService(
@@ -27,7 +27,6 @@ namespace FORUM_PROJECT.DAL
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             LinkGenerator linkGenerator,
-            IEmailService emailService,
             IHttpContextAccessor httpContextAccessor
             )
         {
@@ -35,7 +34,6 @@ namespace FORUM_PROJECT.DAL
             _userManager = userManager;
             _signInManager = signInManager;
             _linkGenerator = linkGenerator;
-            _emailService = emailService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -100,7 +98,6 @@ namespace FORUM_PROJECT.DAL
             {
                 _logger.LogInformation($"Signed up user with username '{username}'");
 
-                //TODO Email verification
                 await SendConfirmationEmail(user);
 
                 return null;
@@ -129,7 +126,7 @@ namespace FORUM_PROJECT.DAL
         public async Task SendConfirmationEmail(User user)
         {
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
+            
             var url = _linkGenerator.GetUriByAction(_httpContextAccessor.HttpContext,
                 "ConfirmEmail", "Auth", new
                 {
@@ -143,7 +140,19 @@ namespace FORUM_PROJECT.DAL
                              $"Visit <a href=\"{url}\">this link</a> to finish registration,\n" +
                              $"Forum";
 
-            await _emailService.SendAsync(user.Email, "Forum sign up confirmation", message, true);
+            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+            var client = new SendGridClient(apiKey);
+
+            var sendGridMessage = new SendGridMessage()
+            {
+                From = new EmailAddress("forum@forum.dev", "Forum Team"),
+                Subject = "Forum sign up confirmation!",
+                HtmlContent = message
+            };
+
+            sendGridMessage.AddTo(new EmailAddress(user.Email, user.UserName));
+            await client.SendEmailAsync(sendGridMessage);
+
             _logger.LogInformation($"Sent confirmation link for user '{user.UserName}' with mail ${user.Email}");
         }
 
