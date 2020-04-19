@@ -1,9 +1,15 @@
 ﻿# Startup
-In order to start the application you have to specify connection string for Microsoft SQL Server by environment variable ConnectionString.
+In order to start the application you have to specify connection string for Microsoft SQL Server by environment variable __ConnectionString__.
+
+
 You also have to specify SMTP parameters via environment variables:
-EMAIL_FROM_ADDRESS,
-SMTP_PASSWORD,
-SMTP_ADDRESS,
-SMTP_PORT_NUMBER
-I have used Gmail
+* __EMAIL_FROM_ADDRESS__;
+* __SMTP_PASSWORD__;
+* __SMTP_ADDRESS__;
+* __SMTP_PORT_NUMBER__.
+
+
+I have used Gmail (SMTP_ADRESS = smtp.gmail.com, SMTP_PORT_NUMBER = 587).
+
+
 Without it you will be able only to watch login and sign up pages, as sign in requires confirmed email.
