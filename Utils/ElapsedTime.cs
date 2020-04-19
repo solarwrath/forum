@@ -38,9 +38,9 @@ namespace FORUM_PROJECT.Utils
                 }
 
                 string articleSuffix = name[0] == 'h' ? "n" : String.Empty;
-
+                
                 return subValue == 0
-                    ? String.Format($"A {articleSuffix} {name} ago")
+                    ? String.Format($"A{articleSuffix} {name} ago")
                     : String.Format($"About a {articleSuffix} {name} ago");
             }
             return subValue == 0
