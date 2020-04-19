@@ -12,7 +12,7 @@ namespace FORUM_PROJECT.Models
 
         [MaxLength(120)]
         public string Title { get; set; }
-        public IEnumerable<Post> Posts { get; set; }
+        public virtual IEnumerable<Post> Posts { get; set; }
         public uint ViewCounter { get; set; } = 0;
 
         public override string ToString()

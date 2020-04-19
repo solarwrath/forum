@@ -9,10 +9,10 @@ namespace FORUM_PROJECT.Models
     public class TopicListEntryViewModel
     {
         public int TopicId { get; set; }
-        public String Title { get; set; }
+        public string Title { get; set; }
         public uint Views { get; set; }
-        public String AuthorUsername { get; set; }
+        public string AuthorUsername { get; set; }
         public uint Replies { get; set; }
-        public String LastActivity { get; set; }
+        public string LastActivity { get; set; }
     }
 }
