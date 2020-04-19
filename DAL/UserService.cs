@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Http;
@@ -9,8 +11,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 
 namespace FORUM_PROJECT.DAL
 {
@@ -123,7 +123,7 @@ namespace FORUM_PROJECT.DAL
             await _signInManager.SignOutAsync();
         }
 
-        public async Task SendConfirmationEmail(User user)
+        public async Task<bool> SendConfirmationEmail(User user)
         {
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             
@@ -140,20 +140,35 @@ namespace FORUM_PROJECT.DAL
                              $"Visit <a href=\"{url}\">this link</a> to finish registration,\n" +
                              $"Forum";
 
-            var apiKey = Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
-            var client = new SendGridClient(apiKey);
+            string emailFromAddress = Environment.GetEnvironmentVariable("EMAIL_FROM_ADDRESS");
+            string smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+            string smtpAddress = Environment.GetEnvironmentVariable("SMTP_ADDRESS");
+            bool portNumberParsedSuccess = int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT_NUMBER"), out int portNumber);
 
-            var sendGridMessage = new SendGridMessage()
+            if (!portNumberParsedSuccess)
             {
-                From = new EmailAddress("forum@forum.dev", "Forum Team"),
-                Subject = "Forum sign up confirmation!",
-                HtmlContent = message
-            };
+                _logger.LogError($"Couldn't parse smtp port number: {Environment.GetEnvironmentVariable("SMTP_PORT_NUMBER")}");
+                return false;
+            }
 
-            sendGridMessage.AddTo(new EmailAddress(user.Email, user.UserName));
-            await client.SendEmailAsync(sendGridMessage);
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress(emailFromAddress);
+                mail.To.Add(user.Email);
+                mail.Subject = "Forum Sign Up Confirmation";
+                mail.Body = message;
+                mail.IsBodyHtml = true;
+                using (SmtpClient smtp = new SmtpClient(smtpAddress, portNumber))
+                {
+                    smtp.Credentials = new NetworkCredential(emailFromAddress, smtpPassword);
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
 
             _logger.LogInformation($"Sent confirmation link for user '{user.UserName}' with mail ${user.Email}");
+
+            return true;
         }
 
         public async Task<bool> TryConfirmEmail(string userId, string code)
