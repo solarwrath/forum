@@ -45,14 +45,16 @@
 <section>
     <h2 class="mt-4 mb-2">Add Post</h2>
     <form id="add-post-form" data-topic-id="@Model.Id">
-        @@
+        @*
         Can't set form to pristine state, but want to empty textarea after submit while using ajax.
         After emptying it becomes invalid (has been focused already), but it is actually valid from UX perspective
         Tried to replace dom node, but we use window.location.reload
         So disabling the border here, there probably is a better solution
-        @@
+        *@
+
+
+        @@DisplayNameFor only needs type, will not fail on null@@
         <textarea class="form-control pristine" name="addPostMessage" required rows="8"
-                  @@DisplayNameFor only needs type, will not fail on null@@
                   placeholder="@Html.DisplayNameFor(model => model.Posts.First().Message)"></textarea>
         <button class="btn btn-primary mt-3" type="submit"><i class="fas fa-paper-plane"></i> Post</button>
     </form>

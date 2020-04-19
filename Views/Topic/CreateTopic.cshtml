@@ -7,17 +7,7 @@
 <div class="container d-flex flex-column justify-content-center full-height">
     <div class="form-wrapper d-flex flex-column justify-content-center">
         <h1 class="title">Create Topic</h1>
-        <form asp-contoller="Auth" asp-action="CreateTopic" method="post">
-            @{
-                IEnumerable<String>? signUpErrors = (IEnumerable<String>)ViewData["signUpErrors"];
-                if (signUpErrors != null)
-                {
-                    foreach (var signUpError in signUpErrors)
-                    {
-                        <div class="alert alert-danger" role="alert">@signUpError</div>
-                    }
-                }
-            }
+        <form asp-controller="Topic" asp-action="CreateTopic" method="post">
             <div class="form-group">
                 <label asp-for="Title"></label>
                 <input asp-for="Title" class="form-control" placeholder="@Html.DisplayNameFor(model => model.Title)"/>
