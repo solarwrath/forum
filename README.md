@@ -12,6 +12,13 @@ Demo user credentials:
 </p>
 
 
+# UML Diagram
+
+<p align="center">
+  <img src="uml_diagram.png" alt="UML Diagram"/>
+</p>
+
+
 # Startup
 In order to start the application you have to specify connection string for Microsoft SQL Server by environment variable __ConnectionString__.
 
