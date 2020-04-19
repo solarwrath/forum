@@ -15,14 +15,14 @@ namespace FORUM_PROJECT.DAL
     {
         private readonly ILogger<PostService> _logger;
         private readonly IGenericRepository<Post> _repository;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ForumContext _forumContext;
 
         public PostService(
             ILogger<PostService> logger,
             IGenericRepository<Post> repository,
-            UserManager<User> userManager,
+            UserManager<IdentityUser> userManager,
             IHttpContextAccessor httpContextAccessor,
             ForumContext forumContext)
         {
@@ -52,7 +52,7 @@ namespace FORUM_PROJECT.DAL
                 return false;
             }
 
-            User? user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            IdentityUser? user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
 
             if (user == null)
             {
@@ -86,7 +86,7 @@ namespace FORUM_PROJECT.DAL
                 return false;
             }
 
-            User? user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            IdentityUser? user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
             if (user == null)
             {
                 _logger.LogError($"Adding new post failed, current user is null!");

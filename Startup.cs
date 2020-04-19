@@ -37,7 +37,7 @@ namespace FORUM_PROJECT
                 );
 
             //Specify security requirements
-            services.AddIdentity<User, IdentityRole>(config =>
+            services.AddIdentity<IdentityUser, IdentityRole>(config =>
                 {
                     config.User.RequireUniqueEmail = true;
 
@@ -60,7 +60,7 @@ namespace FORUM_PROJECT
             services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();
             services.AddScoped<TopicService>();
 
-            services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IGenericRepository<IdentityUser>, GenericRepository<IdentityUser>>();
             services.AddScoped<UserService>();
 
             services.AddScoped<IGenericRepository<Post>, GenericRepository<Post>>();

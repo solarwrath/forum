@@ -15,14 +15,14 @@ namespace FORUM_PROJECT.DAL
     {
         private readonly ILogger<TopicService> _logger;
         private readonly IGenericRepository<Topic> _repository;
-        private readonly UserManager<User> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ForumContext _forumContext;
 
         public TopicService(
             ILogger<TopicService> logger,
             IGenericRepository<Topic> repository,
-            UserManager<User> userManager,
+            UserManager<IdentityUser> userManager,
             IHttpContextAccessor httpContextAccessor,
             ForumContext forumContext)
         {

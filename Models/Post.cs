@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace FORUM_PROJECT.Models
 {
@@ -9,7 +10,7 @@ namespace FORUM_PROJECT.Models
     {
         public int Id { get; set; }
         //Optional cause we can preserve post even if it's author has been deleted
-        public User? Author { get; set; }
+        public IdentityUser? Author { get; set; }
         public string Message { get; set; }
         public int TopicId { get; set; }
         public Topic Topic { get; set; }
