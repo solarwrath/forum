@@ -17,15 +17,15 @@ namespace FORUM_PROJECT.DAL
     public class UserService
     {
         private readonly ILogger<UserService> _logger;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly LinkGenerator _linkGenerator;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserService(
             ILogger<UserService> logger,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
             LinkGenerator linkGenerator,
             IHttpContextAccessor httpContextAccessor
             )
@@ -39,7 +39,7 @@ namespace FORUM_PROJECT.DAL
 
         public async Task<bool> TryLoginUserAsync(string username, string password)
         {
-            User? user = await _userManager.FindByNameAsync(username);
+            IdentityUser? user = await _userManager.FindByNameAsync(username);
 
             if (user != null)
             {
@@ -86,7 +86,7 @@ namespace FORUM_PROJECT.DAL
         {
             username = username.Trim();
 
-            var user = new User
+            var user = new IdentityUser
             {
                 Email = email,
                 UserName = username,
@@ -124,7 +124,7 @@ namespace FORUM_PROJECT.DAL
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<bool> SendConfirmationEmail(User user)
+        public async Task<bool> SendConfirmationEmail(IdentityUser user)
         {
             string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             
@@ -174,7 +174,7 @@ namespace FORUM_PROJECT.DAL
 
         public async Task<bool> TryConfirmEmail(string userId, string code)
         {
-            User? user = await _userManager.FindByIdAsync(userId);
+            IdentityUser? user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,6 @@ namespace FORUM_PROJECT.Models
     {
         public ForumContext(DbContextOptions<ForumContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Topic> Topics { get; set; }
 
@@ -19,7 +19,7 @@ namespace FORUM_PROJECT.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<IdentityUser>(entity =>
             {
                 entity.HasIndex(e => e.Email).IsUnique();
                 entity.HasIndex(e => e.UserName).IsUnique();
