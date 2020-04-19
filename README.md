@@ -6,7 +6,10 @@ Demo user credentials:
 * sesame:openSeasame
 
 #Entity Relationship Diagram
-![alt text](er_diagram.png)
+
+<p align="center">
+  <img src="er_diagram.png" alt="Entity Relationship Diagram"/>
+</p>
 
 
 # Startup
