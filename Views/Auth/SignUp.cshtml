@@ -26,22 +26,26 @@
             }
             <div class="form-group">
                 <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" placeholder="Username" />
+                <input asp-for="Username" class="form-control"
+                       placeholder="@Html.DisplayNameFor(model => model.Username)"/>
                 <span asp-validation-for="Username" class="text-danger" role="alert"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" placeholder="Password" />
+                <input asp-for="Password" class="form-control" 
+                       placeholder="@Html.DisplayNameFor(model => model.Password)" />
                 <span asp-validation-for="Password" class="text-danger" role="alert"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PasswordConfirmation"></label>
-                <input asp-for="PasswordConfirmation" class="form-control" placeholder="Password confirmation" />
+                <input asp-for="PasswordConfirmation" class="form-control" 
+                       placeholder="@Html.DisplayNameFor(model => model.PasswordConfirmation)" />
                 <span asp-validation-for="PasswordConfirmation" class="text-danger" role="alert"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <input asp-for="Email" class="form-control"
+                       placeholder="@Html.DisplayNameFor(model => model.Email)"/>
                 <span asp-validation-for="Email" class="text-danger" role="alert"></span>
             </div>
             <div class="btn-row">

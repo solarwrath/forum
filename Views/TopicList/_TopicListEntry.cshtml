@@ -4,7 +4,7 @@
     <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
 }
 
-<!-- Can't wrap whole tr in <a> so hacking through ::before and position -->
+@* Can't wrap whole tr in <a> so hacking through ::before and position *@
 <tr>
     <td class="title">
         <a class="topic-entry-link" asp-route-topicId="@Model.TopicId" asp-controller="Topic" asp-action="Index">
@@ -16,11 +16,11 @@
     </td>
     <td class="replies">
         <span>@Model.Replies</span>
-</td>
+    </td>
     <td class="views">
         <span>@Model.Views</span>
-</td>
+    </td>
     <td class="activity">
         <span>@Model.LastActivity</span>
-</td>
+    </td>
 </tr>

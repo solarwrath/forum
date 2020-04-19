@@ -4,12 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace FORUM_PROJECT.DAL
@@ -159,12 +156,14 @@ namespace FORUM_PROJECT.DAL
                 mail.Subject = "Forum Sign Up Confirmation";
                 mail.Body = message;
                 mail.IsBodyHtml = true;
-                using (SmtpClient smtp = new SmtpClient(smtpAddress, portNumber))
+
+                using SmtpClient smtp = new SmtpClient(smtpAddress, portNumber)
                 {
-                    smtp.Credentials = new NetworkCredential(emailFromAddress, smtpPassword);
-                    smtp.EnableSsl = true;
-                    smtp.Send(mail);
-                }
+                    Credentials = new NetworkCredential(emailFromAddress, smtpPassword),
+                    EnableSsl = true
+                };
+
+                smtp.Send(mail);
             }
 
             _logger.LogInformation($"Sent confirmation link for user '{user.UserName}' with mail ${user.Email}");

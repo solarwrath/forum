@@ -6,11 +6,7 @@ using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.Models;
 using FORUM_PROJECT.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace FORUM_PROJECT.Controllers
 {
@@ -41,7 +37,7 @@ namespace FORUM_PROJECT.Controllers
                     _forumContext.Entry(post).Reference(post => post.Author).Load();
                 });
 
-                await _topicService.incrementViewCounter(topic);
+                await _topicService.IncrementViewCounter(topic);
 
                 return View(topic);
             }

@@ -1,12 +1,12 @@
-﻿@using Microsoft.CodeAnalysis
-@model IEnumerable<TopicListEntryViewModel>
+﻿@model IEnumerable<TopicListEntryViewModel>
 @{
     ViewData["Title"] = "Forum";
 }
 
 @section Styles {
-    <link href="@Url.Content("~/css/topic-list.css")" rel="stylesheet" />
+    <link href="~/css/topic-list.css" rel="stylesheet" />
 }
+
 <div class="d-flex align-items-center">
     <h1>Forum</h1>
     <a asp-action="CreateTopic" asp-controller="Topic" class="btn btn-success ml-auto create-topic-btn"><i class="fas fa-plus"></i> Create New Topic</a>
