@@ -8,6 +8,6 @@ namespace FORUM_PROJECT.ViewModels
     public class AddPostViewModel
     {
         public int TopicId { get; set; }
-        public String Message { get; set; }
+        public string Message { get; set; }
     }
 }
