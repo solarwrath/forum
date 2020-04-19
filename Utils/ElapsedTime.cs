@@ -41,7 +41,7 @@ namespace FORUM_PROJECT.Utils
                 
                 return subValue == 0
                     ? String.Format($"A{articleSuffix} {name} ago")
-                    : String.Format($"About a {articleSuffix} {name} ago");
+                    : String.Format($"About a{articleSuffix} {name} ago");
             }
             return subValue == 0
                 ? String.Format($"{value} {name}s ago")
