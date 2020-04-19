@@ -5,7 +5,7 @@ Demo user credentials:
 * johndoe:johnDoePassword1!
 * sesame:openSeasame
 
-#Entity Relationship Diagram
+# Entity Relationship Diagram
 
 <p align="center">
   <img src="er_diagram.png" alt="Entity Relationship Diagram"/>
