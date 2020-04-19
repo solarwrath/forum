@@ -48,7 +48,7 @@ namespace FORUM_PROJECT
                     config.Password.RequireNonAlphanumeric = false;
                     config.Password.RequireUppercase = true;
 
-                    config.SignIn.RequireConfirmedEmail = false;
+                    config.SignIn.RequireConfirmedEmail = true;
                 })
                 .AddEntityFrameworkStores<ForumContext>()
                 .AddDefaultTokenProviders();
@@ -58,9 +58,6 @@ namespace FORUM_PROJECT
                 config.Cookie.Name = "ForumIdentity.Cookie";
                 config.LoginPath = "/Auth/Login";
             });
-
-            //Need to send confirmation email
-            services.AddMailKit(config => config.UseMailKit(Configuration.GetSection("MailKit").Get<MailKitOptions>(), ServiceLifetime.Singleton));
 
             services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();
             services.AddScoped<TopicService>();

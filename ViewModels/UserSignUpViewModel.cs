@@ -8,7 +8,6 @@ namespace FORUM_PROJECT.ViewModels
 {
     public class UserSignUpViewModel
     {
-        //TODO Change these validations
         [Required]
         [StringLength(60, MinimumLength = 3)]
         public string Username { get; set; }

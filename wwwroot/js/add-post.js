@@ -17,7 +17,6 @@
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: (response) => {
-                //TODO Scroll to the end
                 //Can update DOM but it would be hardcoded (not partial view) because of no model 
                 //Or inconsistent with actual model
                 if (response.success) {

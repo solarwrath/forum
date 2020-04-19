@@ -16,17 +16,7 @@ namespace FORUM_PROJECT
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetService<ForumContext>();
-                var userManager = services.GetService<UserManager<User>>();
-                ForumDataSeeder.SeedForumData(context, userManager);
-            }
-
-            host.Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
