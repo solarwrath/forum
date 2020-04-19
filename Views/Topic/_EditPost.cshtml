@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Send message</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Confirm editing</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -34,7 +34,6 @@ So I opted to inline script here
     editPostModal.on('show.bs.modal',
         (event) => {
             const messageInput = $('#edit-post-message');
-
             messageInput.trigger('focus');
 
             const triggeredButton = $(event.relatedTarget); // Button that triggered the modal
