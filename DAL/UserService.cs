@@ -69,6 +69,7 @@ namespace FORUM_PROJECT.DAL
         private static readonly string[] SAFE_FOR_OUTPUT_SIGN_UP_ERRORS = new[]
         {
             nameof(IdentityErrorDescriber.LoginAlreadyAssociated),
+            nameof(IdentityErrorDescriber.DuplicateUserName),
             nameof(IdentityErrorDescriber.DuplicateEmail),
             nameof(IdentityErrorDescriber.InvalidUserName),
             nameof(IdentityErrorDescriber.InvalidEmail),
@@ -135,9 +136,9 @@ namespace FORUM_PROJECT.DAL
                 });
             _logger.LogInformation($"Generated confirmation link for user '{user.UserName}': {url}");
 
-            string message = $"Hi there, {user.UserName}.\n" +
-                             $"We are glad that you have decided to participate in the discussions!\n" +
-                             $"Visit <a href=\"{url}\">this link</a> to finish registration,\n" +
+            string message = $"Hi there, {user.UserName}!<br>" +
+                             $"We are glad that you have decided to participate in the discussions!<br>" +
+                             $"Visit <a href=\"{url}\">this link</a> to finish registration,<br>" +
                              $"Forum";
 
             string emailFromAddress = Environment.GetEnvironmentVariable("EMAIL_FROM_ADDRESS");

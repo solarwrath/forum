@@ -27,6 +27,11 @@ namespace FORUM_PROJECT.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToActionPermanent("Index", "TopicList");
+            }
+
             return View();
         }
 
@@ -53,6 +58,11 @@ namespace FORUM_PROJECT.Controllers
         [HttpGet]
         public IActionResult SignUp()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToActionPermanent("Index", "TopicList");
+            }
+
             return View();
         }
 

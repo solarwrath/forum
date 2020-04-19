@@ -16,6 +16,11 @@ namespace FORUM_PROJECT.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Password and Confirmation Password must match!")]
+        public string PasswordConfirmation { get; set; }
+
         [EmailAddress]
         [Required]
         public string Email { get; set; }
