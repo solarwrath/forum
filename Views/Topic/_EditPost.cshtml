@@ -23,12 +23,12 @@
     </div>
 </div>
 
-<!--
+@*
 As it is a partial view we can't add js on-demand to the section (I probably am wrong, but haven't had any success)
 ASP.Net MVC Core changed API quite a lot, so old solutions like HtmlHelper extensions do not work.
 View Components do not have such option too. Only Razor Components of Blazor but that is such an overkill
 So I opted to inline script here
--->
+*@
 <script>
     const editPostModal = $('#editPostModal');
     editPostModal.on('show.bs.modal',
@@ -36,7 +36,7 @@ So I opted to inline script here
             const messageInput = $('#edit-post-message');
             messageInput.trigger('focus');
 
-            const triggeredButton = $(event.relatedTarget); // Button that triggered the modal
+            const triggeredButton = $(event.relatedTarget);
 
             const postId = triggeredButton.closest('.post').data('postId');
 

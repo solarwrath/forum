@@ -6,7 +6,6 @@ using FORUM_PROJECT.DAL;
 using FORUM_PROJECT.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace FORUM_PROJECT.Controllers
 {

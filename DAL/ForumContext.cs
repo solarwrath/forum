@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FORUM_PROJECT.Models
+namespace FORUM_PROJECT.DAL
 {
     public class ForumContext : IdentityDbContext
     {

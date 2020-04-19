@@ -78,7 +78,7 @@ namespace FORUM_PROJECT.DAL
             return await _repository.AddAsync(topic);
         }
 
-        public async Task incrementViewCounter(Topic topic)
+        public async Task IncrementViewCounter(Topic topic)
         {
             topic.ViewCounter++;
             await _forumContext.SaveChangesAsync();

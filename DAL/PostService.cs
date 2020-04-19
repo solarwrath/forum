@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FORUM_PROJECT.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
 namespace FORUM_PROJECT.DAL

@@ -7,7 +7,6 @@ using FORUM_PROJECT.Models;
 using FORUM_PROJECT.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace FORUM_PROJECT.Controllers
