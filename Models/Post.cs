@@ -10,10 +10,10 @@ namespace FORUM_PROJECT.Models
     {
         public int Id { get; set; }
         //Optional cause we can preserve post even if it's author has been deleted
-        public IdentityUser? Author { get; set; }
+        public virtual IdentityUser? Author { get; set; }
         public string Message { get; set; }
-        public int TopicId { get; set; }
-        public Topic Topic { get; set; }
+        public virtual int TopicId { get; set; }
+        public virtual Topic Topic { get; set; }
         public DateTime TimePublished { get; set; }
 
         public override string ToString()
