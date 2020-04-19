@@ -54,7 +54,7 @@ namespace FORUM_PROJECT
             services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "ForumIdentity.Cookie";
-                config.LoginPath = "/Auth/Login";
+                config.LoginPath = "/Auth/LogIn";
             });
 
             services.AddScoped<IGenericRepository<Topic>, GenericRepository<Topic>>();

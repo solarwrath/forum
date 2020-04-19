@@ -29,7 +29,7 @@
                         @if (!User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="Login">Log In</a>
+                                <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="LogIn">Log In</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="SignUp">Sign Up</a>
@@ -38,7 +38,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="Logout">Log Out</a>
+                                <a class="nav-link text-primary" asp-area="" asp-controller="Auth" asp-action="LogOut">Log Out</a>
                             </li>
                         }
                     </ul>

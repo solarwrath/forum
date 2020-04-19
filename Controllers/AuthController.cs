@@ -25,7 +25,7 @@ namespace FORUM_PROJECT.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult LogIn()
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -36,7 +36,7 @@ namespace FORUM_PROJECT.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> LogIn(string username, string password)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -115,10 +115,10 @@ namespace FORUM_PROJECT.Controllers
             return View("ConfirmationEmailError");
         }
 
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> LogOut()
         {
             await _userService.SignOutUserAsync();
-            return RedirectToActionPermanent("Index", "Home");
+            return RedirectToActionPermanent("LogIn", "Auth");
         }
     }
 }
