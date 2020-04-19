@@ -69,6 +69,7 @@ namespace FORUM_PROJECT.DAL
         private static readonly string[] SAFE_FOR_OUTPUT_SIGN_UP_ERRORS = new[]
         {
             nameof(IdentityErrorDescriber.LoginAlreadyAssociated),
+            nameof(IdentityErrorDescriber.DuplicateUserName),
             nameof(IdentityErrorDescriber.DuplicateEmail),
             nameof(IdentityErrorDescriber.InvalidUserName),
             nameof(IdentityErrorDescriber.InvalidEmail),
