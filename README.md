@@ -1,4 +1,18 @@
-﻿# Startup
+﻿# Live Demo
+Application is deployed at [this location](https://forumproject20200419124107.azurewebsites.net/)
+
+Demo user credentials:
+* johndoe:johnDoePassword1!
+* sesame:openSeasame
+
+#Entity Relationship Diagram
+
+<p align="center">
+  <img src="er_diagram.png" alt="Entity Relationship Diagram"/>
+</p>
+
+
+# Startup
 In order to start the application you have to specify connection string for Microsoft SQL Server by environment variable __ConnectionString__.
 
 
